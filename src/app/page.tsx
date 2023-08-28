@@ -1,113 +1,145 @@
+'use client'
 import Image from 'next/image'
+import { useState } from 'react'
 
 export default function Home() {
+  const currencyArray = [200, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
+  const [fullCurrencyArray, setFullCurrencyArray] = useState<number[]>([])
+  const [productValue, setProductValue] = useState('')
+  const [moneyPaid, setMoneyPaid] = useState('')
+  const [nonRepeatingCurrencyArray, setNonRepeatingCurrencyArray] = useState<
+    number[]
+  >([])
+
+  function handleClick(productValue: number, moneyPaid: number) {
+    const auxiliaryArray: number[] = []
+    setNonRepeatingCurrencyArray([])
+    setFullCurrencyArray([])
+    let value = moneyPaid - productValue
+    if (value >= 0) {
+      alert('Compra realizada com sucesso.')
+      currencyArray.forEach((currency) => {
+        while (value >= currency) {
+          auxiliaryArray.push(currency)
+          setFullCurrencyArray((state) => [...state, currency])
+          value = value - currency
+        }
+      })
+
+      setNonRepeatingCurrencyArray(
+        auxiliaryArray.filter((number, index, array) => {
+          return array.indexOf(number) === index
+        }),
+      )
+    } else if (value < 0) {
+      alert('Valor insuficiente para compra.')
+    }
+  }
+
+  function handleRepeatedCurrents(value: number) {
+    const quantityFound = fullCurrencyArray.filter(
+      (item) => item === value,
+    ).length
+    return quantityFound
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="flex gap-6">
+      <div className="flex flex-col gap-6">
+        <main className="flex flex-col gap-6 bg-zinc-800 p-6 rounded-xl">
+          <div className="flex gap-6">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="inputText">Valor do produto</label>
+              <input
+                className="py-3 px-3 rounded bg-zinc-100 text-zinc-800"
+                type="text"
+                id="inputText"
+                placeholder="R$"
+                value={productValue}
+                onChange={(e) => setProductValue(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="inputText">Dinheiro pago</label>
+              <input
+                className="py-3 px-3 rounded bg-zinc-100 text-zinc-800"
+                type="text"
+                id="inputText"
+                placeholder="R$"
+                value={moneyPaid}
+                onChange={(e) => setMoneyPaid(e.target.value)}
+              />
+            </div>
+          </div>
+          <button
+            className="p-4 bg-green-700 rounded-lg hover:bg-green-600 transition duration-300"
+            onClick={() => handleClick(Number(productValue), Number(moneyPaid))}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            Finalizar
+          </button>
+        </main>
+        <div className="flex flex-col gap-6 justify-center items-center bg-zinc-800 p-6 rounded-xl">
+          <Image
+            width={402}
+            height={387}
+            src="/assets/illustration.svg"
+            alt="Ilustração"
+            priority
+          />
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div className="w-[28rem] flex flex-col gap-6">
+        <div className="h-[30.7rem] bg-zinc-800 py-6 pl-6 pr-2 rounded-xl">
+          <div className="h-full flex flex-col gap-6 overflow-y-scroll pr-3 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-800 scrollbar-thumb-rounded-full">
+            {nonRepeatingCurrencyArray.map(
+              (currency, index) =>
+                currency > 1 && (
+                  <div className="relative" key={index}>
+                    <Image
+                      width={402}
+                      height={387}
+                      src={`/assets/${currency}.png`}
+                      alt="Cedulas"
+                    />
+                    {handleRepeatedCurrents(currency) > 1 && (
+                      <div
+                        className="absolute bottom-2 right-2 h-[1.875rem] w-[1.875rem] flex justify-center items-center bg-green-700 rounded-full border border-zinc-50"
+                        key={index}
+                      >
+                        <span>{handleRepeatedCurrents(currency)}</span>
+                      </div>
+                    )}
+                  </div>
+                ),
+            )}
+          </div>
+        </div>
+        <div className="h-[8.49rem] bg-zinc-800 px-6 pt-6 pb-3 rounded-xl">
+          <div className="flex gap-6 overflow-x-scroll pb-4 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-800 scrollbar-thumb-rounded-full">
+            {nonRepeatingCurrencyArray.map(
+              (currency, index) =>
+                currency < 2 && (
+                  <div className="relative" key={index}>
+                    <Image
+                      width={74}
+                      height={74}
+                      src={`/assets/${currency}.png`}
+                      alt="Moedas"
+                    />
+                    {handleRepeatedCurrents(currency) > 1 && (
+                      <div
+                        className="absolute bottom-2 right-2 h-[1.875rem] w-[1.875rem] flex justify-center items-center bg-green-700 rounded-full border border-zinc-50"
+                        key={index}
+                      >
+                        <span>{handleRepeatedCurrents(currency)}</span>
+                      </div>
+                    )}
+                  </div>
+                ),
+            )}
+          </div>
+        </div>
       </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   )
 }
