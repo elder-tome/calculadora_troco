@@ -1,34 +1,63 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Calculadora de Troco
 
-## Getting Started
+## Bem-vindo ao projeto :)
 
-First, run the development server:
+Este projeto teve como objetivo ajudar meu irmão a estudar programação, ele fornecer uma solução simples e eficiente para calcular a quantidade mínima de moedas e cédulas necessárias para dar um troco.
+
+![screenshot da tela](https://github.com/elder-tome/calculadora_troco/blob/main/public/screenshot2.png?raw=true)
+
+## Como Usar
+
+1. **Entrada**: Insira o valor total da compra e o valor pago pelo cliente.
+2. **Cálculo**: A calculadora determinará automaticamente o troco devido.
+3. **Resultado**: Você verá uma lista das moedas e cédulas necessárias para formar o troco, visando minimizar a quantidade total de notas e moedas.
+
+## Desenvolvimento
+
+Configure o ambiente de desenvolvimento para essa aplicação. Aqui você encontrará instruções passo a passo para começar a desenvolver.
+
+## Pré-requisitos
+
+Antes de configurar o ambiente de desenvolvimento, verifique se você possui os seguintes pré-requisitos instalados em sua máquina:
+
+1. **node.js**: Certifique-se de ter o node.js instalado. Recomenda-se usar a versão LTS mais recente. Você pode fazer o download do Node.js em: [https://nodejs.org](https://nodejs.org).
+
+2. **npm** ou **yarn**: O npm é o gerenciador de pacotes padrão do node.js, mas você também pode usar o yarn. Verifique se você possui um deles instalado. O npm geralmente vem junto com o node.js e o Yarn pode ser instalado através do npm com o seguinte comando: `npm i yarn -g`.
+
+3. **git**: Verifique se o git está instalado em sua máquina. Você pode fazer o download do git em: https://git-scm.com/downloads.
+
+## Configuração do Ambiente
+
+Siga estas etapas para configurar o ambiente de desenvolvimento:
+
+1. Clone o repositório e entre na pasta do projeto.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+$ git clone https://github.com/elder-tome/calculadora_troco.git
+
+$ cd calculadora_troco
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Instale as dependências do projeto usando npm ou yarn.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+$ npm i
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# ou
 
-## Learn More
+$ yarn
+```
 
-To learn more about Next.js, take a look at the following resources:
+3. Inicie o servidor de desenvolvimento.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+$ npm run dev
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# ou
 
-## Deploy on Vercel
+$ yarn dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4.  Acesse a aplicação em seu navegador e comece a desenvolver :).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Abra o seu navegador e visite http://localhost:3000 para visualizar a aplicação em execução.
